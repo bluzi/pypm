@@ -1,5 +1,5 @@
 # pypm
-*Py*thon *P*ackage *M*anager is a package manager for Python based on npm
+**Py**thon **P**ackage **M**anager is a package manager for Python based on npm
 
 ## Why?
 Because npm is the best package solution ever invented, and the current solutions for Python packages suck.
