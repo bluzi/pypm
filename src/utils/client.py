@@ -23,3 +23,9 @@ def download(package_name, dest, index=None):
     package_file = Package(dest, explicit_path=True)
     package_file.run('postinstall')
 
+def publish(package_name, version, files, index=None):
+    if not index:
+        index = config.index
+
+    response = requests.post(urllib.parse.urljoin(index, package_name))
+    response.json()
