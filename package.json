@@ -1,0 +1,22 @@
+{
+    "author": "Eliran Pe'er <eliran013@gmail.com>",
+    "dependencies": {
+        "samplePackage": "1.0.0"
+    },
+    "description": "Package manager for Python, based on npm",
+    "keywords": [
+        "package-manager",
+        "python"
+    ],
+    "license": "MIT",
+    "main": "src/__init__.py",
+    "name": "pypm",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/bluzi/pypm"
+    },
+    "scripts": {
+        "start": "python __init__.py"
+    },
+    "version": "0.0.1"
+}

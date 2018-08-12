@@ -12,15 +12,11 @@ def handle(package):
 
 def install_package(package_name):
     print('installing {}'.format(package_name))
-    client.download(package_name, 'python_modules/')
+    downloaded_package_file = client.download(package_name, './python_modules/')
 
     package_file = Package('.')
-    package_file.add_dependency(package_name)
+    package_file.add_dependency(package_name, downloaded_package_file.get_version())
     package_file.save()
-
-
-def _dependency_exists(dependency_name):
-    return os.path.isdir(os.path.join('python_modules', dependency_name))
 
 
 def install_dependencies():
@@ -29,5 +25,9 @@ def install_dependencies():
         if _dependency_exists(dependency_name):
             print('Dependency {} already exists'.format(dependency_name))
         else:
-            client.download(dependency_name, 'python_modules/')
+            client.download(dependency_name, './python_modules/')
             print('Installed {}'.format(dependency_name))
+
+
+def _dependency_exists(dependency_name):
+    return os.path.isdir(os.path.join('python_modules', dependency_name))

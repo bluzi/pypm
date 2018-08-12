@@ -16,7 +16,11 @@ def get_action(action, args):
     return action_handler
 
 
-_, action, args = sys.argv[0], sys.argv[1], sys.argv[2:]
+if len(sys.argv) < 2:
+    action = 'help'
+    args = []
+else:
+    _, action, args = sys.argv[0], sys.argv[1], sys.argv[2:]
 
 handle = get_action(action, args)
 

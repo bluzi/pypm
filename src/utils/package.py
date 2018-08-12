@@ -21,39 +21,44 @@ class Package:
             else:
                 file_path = get_closest_package_file(path)
 
-            if not os.path.isfile(file_path):
+            if not file_path or not os.path.isfile(file_path):
                 if explicit_path:
                     raise ValueError('Unable to find package.json in {}'.format(path))
                 else:
                     raise ValueError('Unable to find package.json in {} or any of its parent directories'.format(path))
 
-
-            with open(file_path) as packageFile:
-                contents = json.load(packageFile)
+            with open(file_path) as package_file:
+                contents = json.load(package_file)
                 self.contents = contents
-                self.path = file_path
+                self.path = os.path.dirname(file_path)
         else:
             self.contents = {}
 
-    def add_dependency(self, package_name):
-        if not self.contents.dependencies:
-            self.contents.dependencies = list()
+    def add_dependency(self, package_name, version):
+        if 'dependencies' not in self.contents:
+            self.contents['dependencies'] = list()
 
-        self.contents.dependencies.append(package_name)
+        self.contents['dependencies'][package_name] = version
 
     def has_dependency(self, package_name):
-        if not self.contents.dependencies:
+        if 'dependencies' not in self.contents:
             return False
 
-        return package_name in self.contents.dependencies
+        return package_name in self.contents['dependencies']
 
     def remove_dependency(self, package_name):
-        if self.contents.dependencies:
-            self.contents.dependencies.remove(package_name)
+        if self.contents['dependencies']:
+            self.contents['dependencies'].remove(package_name)
+
+    def get_version(self):
+        if 'version' not in self.contents:
+            return '0.0.0'
+        else:
+            return self.contents['version']
 
     def run(self, script_name):
-        if script_name in self.contents.scripts:
-            script = self.contents.scripts[script_name].split()
+        if 'scripts' in self.contents and script_name in self.contents['scripts']:
+            script = self.contents['scripts'][script_name].split()
             subprocess.Popen(script)
 
     def save(self, path=None):
@@ -61,4 +66,4 @@ class Package:
             path = self.path
 
             with open(os.path.join(path, 'package.json'), 'w') as package_file:
-                json.dump(self.contents, package_file)
+                json.dump(self.contents, package_file, indent=4)
